@@ -6,6 +6,7 @@
 #include "Candle.h"
 #include "Ground.h"
 #include "Whip.h"
+#include "SubWeapon.h"
 namespace simon
 {
 	class Simon:public core::CGameObject

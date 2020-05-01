@@ -131,7 +131,7 @@ namespace input
 
 					// position
 					simon->GetPosition(sx, sy);
-					weapon->SetPosition(sx, sy);
+					weapon->SetPosition(sx, sy+10);
 					int ox;
 					simon->GetOrientation_x(ox);
 					// orientation

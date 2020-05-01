@@ -133,6 +133,20 @@ namespace simon
 					if (e->nx != 0) x += dx;
 					if (e->ny != 0) y += dy;
 				}
+				else if(dynamic_cast<simon::SubWeapon*>(e->obj))
+				{
+					int status;
+					e->obj->GetStatus(status);
+					if(status==BOOMERANG)
+					{
+						e->obj->SetEnable(false);
+					}
+					else
+					{
+						if (e->nx != 0) x += dx;
+						if (e->ny != 0) y += dy;
+					}
+				}
 			}
 		}
 		// clean up collision events

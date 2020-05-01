@@ -204,6 +204,9 @@ namespace simon
 		case BOOMERANG:
 			right = left + 30;
 			bottom = top + 28;
+		case USING_HOLY_WATER:
+			right = left + 30;
+			bottom = top + 28;
 		default:
 			break;
 		}
