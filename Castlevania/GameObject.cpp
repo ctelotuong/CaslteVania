@@ -22,7 +22,7 @@ namespace core
 		rect.top = 0;
 		rect.right = (int)r - (int)l;
 		rect.bottom = (int)b - (int)t;
-		CGame::GetInstance()->draw(1, 0, l, t, bbox, 0, 0, rect.right, rect.bottom, 32);
+		CGame::GetInstance()->draw(1, Orientation_x, l, t, bbox, 0, 0, rect.right, rect.bottom, 32);
 	}
 	bool CGameObject:: AABB(float left_obj, float top_obj, float right_obj, float bottom_obj, float left_other, float top_other, float right_other, float bottom_other)
 	{

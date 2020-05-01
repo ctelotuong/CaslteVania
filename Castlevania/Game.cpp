@@ -75,7 +75,7 @@ namespace core
 
 		spriteHandler->GetTransform(&Previous_Transform);
 
-		//tâm vẽ center của sprite
+		//tâm transform center của sprite
 		D3DXVECTOR2 center = D3DXVECTOR2(position.x + (right - left) / 2, position.y + (bottom - top) / 2);
 		//orientation là hướng của object hiện tại
 		//-1 là bên trái. thì scale là 1 không thay đổi

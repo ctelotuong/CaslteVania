@@ -1,5 +1,3 @@
-﻿  Input.cpp
-  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
-C:\Users\tuong\Desktop\CaslteVania\Castlevania\Utils.h(40,1): warning C4005: 'DIRECTINPUT_VERSION': macro redefinition
-C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h(42): message : see previous definition of 'DIRECTINPUT_VERSION'
+﻿  Simon.cpp
+C:\Users\tuong\Desktop\CaslteVania\Castlevania\Simon.cpp(153,21): warning C4018: '<': signed/unsigned mismatch
   Castlevania.vcxproj -> C:\Users\tuong\Desktop\CaslteVania\Castlevania\Debug\Castlevania.exe

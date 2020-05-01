@@ -69,24 +69,6 @@ namespace static_object
 			animations->Add(animation_id, ani);
 		}
 		animation_reader.close();
-		/*core::LPANIMATION ani;
-		ani = new core::CAnimation();
-		ani->Add(20001);
-		animations->Add(GROUND_ANIMATION_1, ani);
-		ani = new core::CAnimation();
-		ani->Add(20002);
-		animations->Add(GROUND_ANIMATION_2, ani);
-		ani = new core::CAnimation();
-		ani->Add(20003);
-		animations->Add(GROUND_ANIMATION_2_2, ani);
-		ani = new core::CAnimation();
-		ani->Add(20004);
-		animations->Add(GROUND_ANIMATION_3, ani);
-		ani = new core::CAnimation();
-		ani->Add(20005);
-		animations->Add(GROUND_ANIMATION_3_2, ani);
-		ani = new core::CAnimation();
-		ani->Add(20006);
-		animations->Add(GROUND_ANIMATION_4, ani);*/
+		
 	}
 }
