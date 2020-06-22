@@ -1,3 +1,54 @@
-﻿  Simon.cpp
-C:\Users\tuong\Desktop\CaslteVania\Castlevania\Simon.cpp(153,21): warning C4018: '<': signed/unsigned mismatch
-  Castlevania.vcxproj -> C:\Users\tuong\Desktop\CaslteVania\Castlevania\Debug\Castlevania.exe
+﻿  Animation.cpp
+  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Utils.h(40,1): warning C4005: 'DIRECTINPUT_VERSION': macro redefinition
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h(42): message : see previous definition of 'DIRECTINPUT_VERSION'
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Animation.cpp(37,22): warning C4018: '>=': signed/unsigned mismatch
+  Candle.cpp
+  Game.cpp
+  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Utils.h(40,1): warning C4005: 'DIRECTINPUT_VERSION': macro redefinition
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h(42): message : see previous definition of 'DIRECTINPUT_VERSION'
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Game.cpp(83,47): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+  GameObject.cpp
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\GameObject.cpp(86,27): warning C4305: '=': truncation from '__int64' to 'float'
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\GameObject.cpp(87,25): warning C4305: '=': truncation from '__int64' to 'float'
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\GameObject.cpp(97,27): warning C4305: '=': truncation from '__int64' to 'float'
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\GameObject.cpp(98,25): warning C4305: '=': truncation from '__int64' to 'float'
+  Ground.cpp
+  Input.cpp
+  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Utils.h(40,1): warning C4005: 'DIRECTINPUT_VERSION': macro redefinition
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h(42): message : see previous definition of 'DIRECTINPUT_VERSION'
+  Item.cpp
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Item.cpp(148,21): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+  SceneManager.cpp
+  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Utils.h(40,1): warning C4005: 'DIRECTINPUT_VERSION': macro redefinition
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h(42): message : see previous definition of 'DIRECTINPUT_VERSION'
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SceneManager.cpp(98,16): warning C4018: '<': signed/unsigned mismatch
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SceneManager.cpp(105,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SceneManager.cpp(114,18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SceneManager.cpp(126,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SceneManager.cpp(156,48): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SceneManager.cpp(169,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SceneManager.cpp(187,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SceneManager.cpp(187,33): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SceneManager.cpp(188,21): warning C4018: '<': signed/unsigned mismatch
+  Simon.cpp
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Simon.cpp(153,21): warning C4018: '<': signed/unsigned mismatch
+  Sprite.cpp
+  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Utils.h(40,1): warning C4005: 'DIRECTINPUT_VERSION': macro redefinition
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h(42): message : see previous definition of 'DIRECTINPUT_VERSION'
+  SubWeapon.cpp
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\SubWeapon.cpp(145,21): warning C4018: '<': signed/unsigned mismatch
+  Texture.cpp
+  TileMap.cpp
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\TileMap.cpp(91,72): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\TileMap.cpp(91,53): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Utils.cpp
+  Whip.cpp
+  Generating Code...
+  LINK : C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Debug\Castlevania.exe not found or not built by the last incremental link; performing full link
+  Castlevania.vcxproj -> C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Debug\Castlevania.exe
