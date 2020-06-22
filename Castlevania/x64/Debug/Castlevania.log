@@ -1,0 +1,16 @@
+﻿  Game.cpp
+  C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\Utils.h(40,1): warning C4005: 'DIRECTINPUT_VERSION': macro redefinition
+C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include\dinput.h(42): message : see previous definition of 'DIRECTINPUT_VERSION'
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\Animation.h(39,23): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\Game.cpp(83,47): warning C4244: 'argument': conversion from 'int' to 'FLOAT', possible loss of data
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\Game.cpp(117,35): error C2065: 'GWL_HINSTANCE': undeclared identifier
+  GameObject.cpp
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\Animation.h(39,23): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\GameObject.cpp(86,27): warning C4305: '=': truncation from '__int64' to 'float'
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\GameObject.cpp(87,25): warning C4305: '=': truncation from '__int64' to 'float'
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\GameObject.cpp(97,27): warning C4305: '=': truncation from '__int64' to 'float'
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\GameObject.cpp(98,25): warning C4305: '=': truncation from '__int64' to 'float'
+  Whip.cpp
+C:\Users\tuong\Desktop\Castlevania\Castlevania\Castlevania\Animation.h(39,23): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
