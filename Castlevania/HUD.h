@@ -27,15 +27,18 @@ namespace HUD
 		vector<core::LPSPRITE>enemyHP;
 		vector<core::LPSPRITE>loseHP;
 
-		int Score;
+		core::CSprite* subWeaponBox;
+		vector<core::LPSPRITE> subWeaponList;
+		
+		int Score_Simon;
 		int Time;
 		int Scene;
-		int Subweapon;
-		int Mana;
-		int life;
-		int HP;
-		int item;
-		int bossHP;
+		int Subweapon_Simon;
+		int Mana_Simon;
+		int Life_Simon;
+		int HP_Simon;
+		int Item;
+		int BossHP;
 
 	public:
 		HUD(core::SceneManager* scenes, core::CGame* game);

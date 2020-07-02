@@ -5,6 +5,8 @@ namespace core
 	{
 		this->game = game;
 		this->ID_scene = ID_scene;
+
+		
 	}
 	SceneManager::~SceneManager()
 	{
@@ -17,7 +19,18 @@ namespace core
 		case SCENE_1:
 		
 			LoadObjectsFromFile(L"Scenes\\Scene1_objects.txt");
-			SetGameState(SCENE_1);
+			SetGameState(SCENE_1); 
+			CreateListChangeSceneObjects();
+			break;
+		case SCENE_2:
+			LoadObjectsFromFile(L"Scenes\\Scene2_objects.txt");
+			SetGameState(SCENE_2);
+			CreateListChangeSceneObjects(); 
+				break;
+		case SCENE_2_2:
+			LoadObjectsFromFile(L"Scenes\\Scene2.2_objects.txt");
+			SetGameState(SCENE_2_2);
+			CreateListChangeSceneObjects();
 			break;
 		}
 	}
@@ -41,10 +54,25 @@ namespace core
 		item = new static_object::Item();
 		item->LoadResources(textures, sprites, animations);
 
+		stair = new static_object::Stair();
+		stair->LoadResources(textures, sprites, animations);
+
+		black_knight = new enemy::Black_Knight();
+		black_knight->LoadResources(textures, sprites, animations);
+
+		bat = new enemy::Bat();
+		bat->LoadResources(textures, sprites, animations);
+
+		platform = new item::Platform;
+		platform->LoadResources(textures, sprites, animations);
 		
 		tilemaps->Add(SCENE_1, L"TileMap\\Scene_1_map.txt", L"Textures\\Scene_1_bank.png", 47 * 32, 11 * 32, 32, 32);
+		tilemaps->Add(SCENE_2, L"TileMap\\Scene_2_map.txt", L"Textures\\Scene_2_bank.png", 16 * 32, 12 * 32, 32, 32);
+		tilemaps->Add(SCENE_2_2, L"TileMap\\Scene_2.2_map.txt", L"Textures\\Scene_2.2_bank.png", 32 * 32, 12 * 32, 32, 32);
 		textures->Add(ID_TEXTURE_BBOX, L"Textures\\bbox.png", D3DCOLOR_XRGB(0, 0, 0));
-		
+
+		simons = new simon::Simon();
+		subweapon = new simon::SubWeapon();
 	}
 	void SceneManager::LoadObjectsFromFile(LPCWSTR FilePath)
 	{
@@ -63,6 +91,8 @@ namespace core
 		int status;
 		bool isEnable;
 		int idItem;
+		float start_x;
+		float end_x;
 		simons = new simon::Simon();
 		List_Objects_In_Game.push_back(simons);
 		subweapon = new simon::SubWeapon();
@@ -70,31 +100,91 @@ namespace core
 		List_Objects_In_Game.push_back(subweapon);
 		while (!fs.eof())
 		{
-			fs >> ID_Obj >> pos_x >> pos_y >> status >> isEnable >> idItem;
-			switch (ID_Obj)
+			fs >> ID_Obj;
+			if (ID_Obj != BLACK_KNIGHT && ID_Obj!=PLATFORM)
 			{
-			case GROUND:
-				ground = new static_object::Ground();
-				ground->SetPosition(pos_x, pos_y);
-				ground->SetStatus(status);
-				ground->SetEnable(isEnable);
-				ground->Set_Id_item_that_obj_carry(idItem);
-				List_Objects_In_Game.push_back(ground);
-				break;
-			case CANDLE:
-				candle = new static_object::Candle();
-				candle->SetPosition(pos_x, pos_y);
-				candle->SetStatus(status);
-				candle->SetEnable(isEnable);
-				candle->Set_Id_item_that_obj_carry(idItem);
-				List_Objects_In_Game.push_back(candle);
-			default:
-				break;
+				fs >> pos_x >> pos_y >> status >> isEnable >> idItem;
+				switch (ID_Obj)
+				{
+				case GROUND:
+					ground = new static_object::Ground();
+					ground->SetPosition(pos_x, pos_y);
+					ground->SetStatus(status);
+					ground->SetEnable(isEnable);
+					ground->Set_Id_item_that_obj_carry(idItem);
+					List_Objects_In_Game.push_back(ground);
+					break;
+				case CANDLE:
+					candle = new static_object::Candle();
+					candle->SetPosition(pos_x, pos_y);
+					candle->SetStatus(status);
+					candle->SetEnable(isEnable);
+					candle->Set_Id_item_that_obj_carry(idItem);
+					List_Objects_In_Game.push_back(candle);
+					break;
+				case STAIR:
+					stair = new static_object::Stair();
+					stair->SetPosition(pos_x, pos_y);
+					stair->SetStatus(status);
+					stair->SetEnable(isEnable);
+					stair->Set_Id_item_that_obj_carry(idItem);
+					List_Objects_In_Game.push_back(stair);
+					List_Stairs.push_back(stair);
+					break;
+				case BAT:
+					bat = new enemy::Bat();
+					bat->SetPosition(pos_x, pos_y);
+					bat->Set_Start_y(pos_y);
+					bat->SetStatus(status);
+					bat->SetEnable(isEnable);
+					bat->Set_Id_item_that_obj_carry(idItem);
+					List_Objects_In_Game.push_back(bat);
+					break;
+				default:
+					break;
+				}
+			}
+			else
+			{
+				fs >> pos_x >> pos_y >> status >> isEnable >> idItem>>start_x>>end_x;
+				switch (ID_Obj)
+				{
+				case BLACK_KNIGHT:
+					black_knight = new enemy::Black_Knight();
+					black_knight->SetPosition(pos_x, pos_y);
+					black_knight->SetStatus(status);
+					black_knight->SetEnable(isEnable);
+					black_knight->Set_Id_item_that_obj_carry(idItem);
+					List_Objects_In_Game.push_back(black_knight);
+					black_knight->Set_start_end(start_x, end_x);
+					break;
+				case PLATFORM:
+					platform = new item::Platform();
+					platform->SetPosition(pos_x, pos_y);
+					platform->SetStatus(status);
+					platform->SetEnable(isEnable);
+					platform->Set_Id_item_that_obj_carry(idItem);
+					List_Objects_In_Game.push_back(platform);
+					platform->Set_start_end(start_x, end_x);
+					break;
+				}
 			}
 		}
 	}
 	void SceneManager::Update(DWORD dt)
 	{
+		int status;
+		simons->GetStatus(status);
+		//Cập nhật simon để chuyển màn
+		if (simons->Get_Change_Scene()!=-1)
+		{
+			if(ID_scene == SCENE_1 ||(ID_scene==SCENE_2&&status==STAIR_UP))
+			{
+				ID_scene = simons->Get_Change_Scene();
+				Init(ID_scene);
+				simons->Set_Change_Scene(-1);
+			}
+		}
 		for(int i=0;i<List_Objects_In_Game.size();i++)
 		{
 			if (List_Objects_In_Game[i]->Is_Enable == false)
@@ -106,8 +196,11 @@ namespace core
 				{
 					if (List_Objects_In_Game[j]->Is_Enable == false)
 						continue;
-					co0bjects.push_back(List_Objects_In_Game[j]); //nạp tất cả object đang enable vào hàm update simon
+					 //nạp tất cả object đang enable vào hàm update simon
+					if(dynamic_cast<static_object::Stair*>(List_Objects_In_Game[j]) == nullptr)
+					co0bjects.push_back(List_Objects_In_Game[j]);
 				}
+				simons->CheckChangeScene(&listChangeSceneObjs);
 			}
 			else if(dynamic_cast<static_object::Item*>(List_Objects_In_Game[i]))
 			{
@@ -136,6 +229,45 @@ namespace core
 						co0bjects.push_back(List_Objects_In_Game[j]);
 					}
 				}
+				
+			}
+			else if (dynamic_cast<enemy::Black_Knight*>(List_Objects_In_Game[i]))
+			{
+				for (int j = 1; j < List_Objects_In_Game.size(); j++)
+				{
+					if (List_Objects_In_Game[j]->Is_Enable == false)
+						continue;
+					if (dynamic_cast<static_object::Ground*>(List_Objects_In_Game[j])) //Nạp tất cả object là Ground vào co0jects trong hàm update Subweapon de xu lý va chạm
+					{
+						co0bjects.push_back(List_Objects_In_Game[j]);
+					}
+					float sx13, sy13;
+					simons->GetPosition(sx13, sy13);
+					black_knight->Is_Simon_in_the_target(sx13, sy13);
+				}
+			}
+			else if (dynamic_cast<enemy::Bat*>(List_Objects_In_Game[i]))
+			{
+				for (int j = 1; j < List_Objects_In_Game.size(); j++)
+				{
+					if (List_Objects_In_Game[j]->Is_Enable == false)
+						continue;
+					float sx13, sy13;
+					simons->GetPosition(sx13, sy13);
+					bat->Is_Simon_in_the_target(sx13, sy13);
+				}
+			}
+			else if(dynamic_cast<item::Platform*>(List_Objects_In_Game[i]))
+			{
+				for (int j = 1; j < List_Objects_In_Game.size(); j++)
+				{
+					if (List_Objects_In_Game[j]->Is_Enable == false)
+						continue;
+					if (dynamic_cast<static_object::Ground*>(List_Objects_In_Game[j])) //Nạp tất cả object là Ground vào co0jects trong hàm update Subweapon de xu lý va chạm
+					{
+						co0bjects.push_back(List_Objects_In_Game[j]);
+					}
+				}
 			}
 			else
 			{
@@ -148,12 +280,12 @@ namespace core
 		simons->GetPosition(sx, sy);
 		float cx, cy;
 		game->GetCameraPositon(cx, cy);
-		if (sx > SCREEN_WIDTH / 2 && sx + SCREEN_WIDTH / 2 < tilemaps->Get(ID_scene)->Get_Map_Width())
+		if (sx > SCREEN_WIDTH / 2 && sx + SCREEN_WIDTH / 2 -16< tilemaps->Get(ID_scene)->Get_Map_Width())
 			game->SetCamaraPosition(sx - SCREEN_WIDTH / 2, 0);
 		//va chạm cuối map. -70 là right của sprite simon
-		if(sx>=tilemaps->Get(ID_scene)->Get_Map_Width()-70)
+		if(sx>=tilemaps->Get(ID_scene)->Get_Map_Width()-32)
 		{
-			sx= tilemaps->Get(ID_scene)->Get_Map_Width()-70;
+			sx= tilemaps->Get(ID_scene)->Get_Map_Width()-32;
 			simons->SetPosition(sx, sy);
 		}
 		//Subweapon ra khỏi camera thì sẽ biến mất
@@ -192,6 +324,7 @@ namespace core
 
 			List_Objects_In_Game[i]->Render();
 			List_Objects_In_Game[i]->RenderBBox();
+			
 		}
 	}
 	void SceneManager::SetGameState(int state)
@@ -200,7 +333,34 @@ namespace core
 		{
 		case SCENE_1:
 			simons->SetPosition(0.0f,0.0f);
+			game->SetCamaraPosition(0.0f,0.0f);
+			break;
+		case SCENE_2:
+			simons->SetPosition(0.0f, 340.0f);
+			game->SetCamaraPosition(0.0f, 0.0f);
+			break;
+		case SCENE_2_2:
+			simons->SetPosition(740.0f, 389.0f);
+			simons->SetStatus(STAIR_UP);
+			simons->SetOrientation_x(1);
+			game->SetCamaraPosition(544.0f, 0.0f);
 			break;
 		}
 	}
+	void SceneManager::CreateListChangeSceneObjects()
+	{
+		listChangeSceneObjs.clear();
+
+		switch (ID_scene)
+		{
+		case SCENE_1:
+			changeScene = new static_object::ChangeScene(1366, 295, SCENE_2);
+			listChangeSceneObjs.push_back(changeScene);
+			break;
+		case SCENE_2:
+			changeScene = new static_object::ChangeScene(288, 64, SCENE_2_2);
+			listChangeSceneObjs.push_back(changeScene);
+		}
+	}
+
 }

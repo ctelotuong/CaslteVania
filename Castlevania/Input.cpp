@@ -30,6 +30,14 @@ namespace input
 		{
 			return true;
 		}
+		if(status==STAIR_UP && scenes->Get_Simon()->animations[STAIR_UP]->IsOver(200)==false)
+		{
+			return true;
+		}
+		if (status == STAIR_DOWN && scenes->Get_Simon()->animations[STAIR_DOWN]->IsOver(200) == false)
+		{
+			return true;
+		}
 		return false;
 	}
 	bool Input::CanProcessKeyboard()
@@ -50,6 +58,14 @@ namespace input
 	}
 	void Input::KeyState(BYTE* state)
 	{
+		bool isCollideWithStair = false;
+
+		simon::Simon* simon = scenes->Get_Simon();
+		vector<core::LPGAMEOBJECT>* listStairs = scenes->Get_List_Stairs();
+		if(simon->CheckCollisionSimonAndStair(listStairs)==true)
+		{
+			isCollideWithStair = true;
+		}
 		if (CanProcessKeyboard() == false)
 		{
 			return;
@@ -82,10 +98,79 @@ namespace input
 		}
 		else if (game->IsKeyDown(DIK_DOWN))
 		{
+			if(isCollideWithStair==true)
+			{
+				if(simon->Get_Is_Move_Down()==false)
+				{
+					return;
+				}
+				int status1;
+				simon->GetStatus(status1);
+				int prevState = status1;
+				simon->SetOrientation_x(-simon->Get_Stair_Direction());
+				simon->SetStatus(STAIR_DOWN);
+
+				if(simon->Get_Is_Onstair()==false)
+				{
+					simon->Set_On_Stair(true);
+					simon->PositionCorrection();
+				}
+				else if(prevState==STAIR_UP)//nếu simon đột nhien chuyển từ trang thai stairup sang stair down 
+				{
+					simon->PositionCorrection(prevState);
+				}
+				return;
+			}
 			scenes->Get_Simon()->SetStatus(SIT);
+		}
+		else if (game->IsKeyDown(DIK_UP))
+		{
+			int prevStave;
+			simon->GetStatus(prevStave);
+			if (isCollideWithStair == true)
+			{
+				if (simon->Get_Is_Move_Up() == false)
+				{
+					simon->SetStatus(STAND);
+					if (prevStave == STAIR_UP)
+					{
+						float sx, sy;
+						simon->GetPosition(sx, sy);
+						int nx;
+						simon->GetOrientation_x(nx);
+						simon->SetPosition(sx + nx * 5.0f, sy - 5.0f);
+					}
+					return;
+				}
+
+				simon->SetOrientation_x(simon->Get_Stair_Direction());
+				simon->SetStatus(STAIR_UP);
+				if (simon->Get_Is_Onstair() == false)
+				{
+					simon->Set_On_Stair(true);
+					simon->PositionCorrection();
+				}
+				else if (prevStave == STAIR_DOWN)//nếu simon dot nhien chuyển từ trang thái stairdown sang stairup
+				{
+					simon->PositionCorrection(prevStave);
+				}
+				
+			}
+			else
+			{
+				simon->SetStatus(STAND);
+			}
 		}
 		else
 		{
+			int status2;
+			simon->GetStatus(status2);
+			if(isCollideWithStair==true &&(status2==STAIR_UP ||status2==STAIR_DOWN))
+			{
+				simon->StandOnStair();
+				simon->animations[status2]->Reset();
+				return;
+			}
 			scenes->Get_Simon()->SetStatus(STAND);
 		}
 	}

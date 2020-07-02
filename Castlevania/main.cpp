@@ -6,10 +6,12 @@
 #include "Game.h"
 #include "SceneManager.h"
 #include "Input.h"
+#include "HUD.h"
 
 core::SceneManager* scenes;
 core::CGame* cgame;
 input::Input* cinput;
+HUD::HUD* hud;
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -71,7 +73,7 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 }
 void Update(DWORD dt)
 {
-
+	hud->Update(dt);
 	scenes->Update(dt);
 }
 void Render()
@@ -86,6 +88,7 @@ void Render()
 		d3ddv->Clear(0, NULL, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
 		scenes->Render();
+		hud->Render();
 		spriteHandler->End();
 		d3ddv->EndScene();
 	}
@@ -129,11 +132,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	cgame = core::CGame::GetInstance();
 	cgame->Init(hWnd);
-	scenes = new core::SceneManager(cgame,SCENE_1);
+	scenes = new core::SceneManager(cgame,SCENE_2_2);
 	scenes->LoadResources();
-	scenes->Init(SCENE_1);
+	scenes->Init(SCENE_2_2);
 	cinput = new input::Input(cgame, scenes);
 	cgame->InitKeyboard(cinput);
+
+	hud = new HUD::HUD(scenes, cgame);
+	hud->Init();
 	Run();
 	return 0;
 }

@@ -17,7 +17,10 @@ namespace simon
 		Add_Animation_into_state(HIT_STAND_ANIMATION);
 		Add_Animation_into_state(HIT_STAND_ANIMATION);
 		Add_Animation_into_state(UPDATE_ANIMATION);
-
+		Add_Animation_into_state(STAIR_UP_ANIMATION);
+		Add_Animation_into_state(STAIR_DOWN_ANIMATION);
+		Add_Animation_into_state(HIT_STAIR_UP_ANIMATION);
+		Add_Animation_into_state(HIT_STAIR_DOWN_ANIMATION);
 		whip = new Whip();
 		Mana = 14;
 		Life = 3;
@@ -26,20 +29,26 @@ namespace simon
 	}
 	void Simon::Update(DWORD dt, vector<core::LPGAMEOBJECT>* List_Objects_In_Game, vector<core::LPGAMEOBJECT>* coObjects)
 	{
+		
+	
+		
 		core::CGameObject::Update(dt);
 		//Cho tốc độ simon nhảy lên nhanh gấp 2 lần khi simon rơi xuống
-		if (vy >= 0 && vy <= SIMON_SPEED_JUMP/2)
+		if (status != STAIR_UP && status != STAIR_DOWN)
 		{
-			vy += HALF_OF_GRAVITY * dt;
-		}
-		else
-		{
-			vy += GRAVITY * dt;
-			isFalling = true;
-			//tránh lun giữ trạng thái ATTACK_STAND khi simon rơi xuống làm quay lại FRAME đầu.
-			if(vy > 0.6f)
+			if (vy >= 0 && vy <= SIMON_SPEED_JUMP / 2)
 			{
-				status = STAND;
+				vy += HALF_OF_GRAVITY * dt;
+			}
+			else
+			{
+				vy += GRAVITY * dt;
+				isFalling = true;
+				//tránh lun giữ trạng thái ATTACK_STAND khi simon rơi xuống làm quay lại FRAME đầu.
+				if (vy > 0.6f)
+				{
+					status = STAND;
+				}
 			}
 		}
 		//Xét va chạm với item
@@ -119,13 +128,37 @@ namespace simon
 					if (e->nx != 0) x += dx;
 					if (e->ny != 0) y += dy;
 				}
-				else if (dynamic_cast<static_object::Ground*>(e->obj))
+				else if (dynamic_cast<static_object::Ground*>(e->obj) )
 				{
+					if ((nx != 0||ny!=0) && status == STAIR_UP)
+					{
+						if (nx > 0)
+						{
+							x += nx * 0.1f;// khi lên bậc thang cuối cùng khi va chạm với ground thì giúp simon đi sâu vào ground 1 đoạn => không xét sweptAABB nữa simon đi thẳng lên luôn
+						}
+						else if (nx < 0)
+						{
+							x -= nx * 0.1f;
+						}
+						if (ny > 0)
+						{
+							y -= ny * 0.2f;// khi lên bậc thang cuối cùng khi va chạm với ground thì giúp simon đi sâu vào ground 1 đoạn => không xét sweptAABB nữa simon đi thẳng lên luôn
+						}
+						else if (ny < 0)
+						{
+							y += ny * 0.2f;
+						}
+					}
 					if (ny < 0)
 					{
 						vy = 0;
 						isOntheGround = true;
 						isFalling = false;
+					}
+					
+					if(status ==STAIR_DOWN)
+					{
+						status = STAND;
 					}
 				}
 				else if(dynamic_cast<static_object::Item*>(e->obj))
@@ -194,9 +227,13 @@ namespace simon
 		case STAND:
 			isStand = true;
 			isOntheGround = true;
+			isMoveUp = false;
+			isMoveDown = false;
+			isOnStair = false;
 			vx = 0;
 			break;
 		case WALK:
+			isOnStair = false;
 			if (Orientation_x > 0)
 				vx = SIMON_WALK_SPEED;
 			else
@@ -204,14 +241,17 @@ namespace simon
 			break;
 		case JUMP:
 			isOntheGround = false;
+			isOnStair = false;
 			vy = -SIMON_SPEED_JUMP;
 			break;
 		case SIT:
+			isOnStair = false;
 			vx = 0;
 			isStand = false;
 			isOntheGround = true;
 			break;
 		case ATTACK_SIT:
+			isOnStair = false;
 			isStand = false;
 			isOntheGround = true;
 			animations[status]->Reset();
@@ -220,7 +260,26 @@ namespace simon
 		case ATTACK_STAND:
 		case ATTACK:
 		case UPDATE:
+			isOnStair = false;
 			isStand = true;
+			animations[status]->Reset();
+			animations[status]->SetAniStartTime(GetTickCount());
+			break;
+		case STAIR_UP:
+			isOntheGround = false;
+			isStand = true;
+			if (Orientation_x > 0) vx = 0.08f;
+			else vx = -0.08f;
+			vy = -0.08f;
+			animations[status]->Reset();
+			animations[status]->SetAniStartTime(GetTickCount());
+			break;
+		case STAIR_DOWN:
+			isStand = true;
+			isOntheGround = false;
+			if (Orientation_x > 0) vx = 0.08f;
+			else vx = -0.08f;
+			vy = 0.08f;
 			animations[status]->Reset();
 			animations[status]->SetAniStartTime(GetTickCount());
 			break;
@@ -230,12 +289,45 @@ namespace simon
 	}
 	void Simon::GetBBox(float& B_left, float& B_top, float& B_right, float& B_bottom)
 	{
-		//sprite của SIMON là 70x70, BBox là 40x64
-		B_left = x + 13;
-		B_top = y + 8;
-		B_right = B_left + 40;
-		B_bottom = B_top + 64;
-
+		int status;
+		GetStatus(status);
+		if (Orientation_x==-1 &&status !=JUMP && status != STAIR_UP)
+		{
+			//sprite của SIMON là 70x70, BBox là 40x64
+			B_left = x + 13;
+			B_top = y + 8;
+			B_right = B_left + 32;
+			B_bottom = B_top + 59;
+		}
+		else if(Orientation_x==1 && status != JUMP && status != STAIR_UP)
+		{
+			B_left = x + 24;
+			B_top = y + 8;
+			B_right = B_left + 32;
+			B_bottom = B_top + 59;
+		}
+		
+		else if(Orientation_x == -1 && status == JUMP)
+		{
+			B_left = x + 13;
+			B_top = y + 18;
+			B_right = B_left + 32;
+			B_bottom = B_top + 49;
+		}
+		else if (Orientation_x == 1 && status == JUMP)
+		{
+			B_left = x + 24;
+			B_top = y + 18;
+			B_right = B_left + 32;
+			B_bottom = B_top + 49;
+		}
+		else if(Orientation_x==1 &&status ==STAIR_UP)
+		{
+			B_left = x + 24;
+			B_top = y + 8;
+			B_right = B_left + 39;
+			B_bottom = B_top + 59;
+		}
 	}
 	void Simon::LoadResources(core::CTexture*& textures, core::CSprites*& sprites, core::CAnimations*& animations)
 	{
@@ -283,5 +375,165 @@ namespace simon
 		GetBBox(simon_left, simon_top, simon_right, simon_bottom);
 		return AABB(simon_left, simon_top, simon_right, simon_bottom, left, top, right, bottom);
 	}
+	bool Simon::CheckChangeScene(vector<static_object::LPCHANGESCENEOBJ>* listChangeScene)
+	{
+		float simon_left, simon_top, simon_right, simon_bottom;
+		float left, top, right, bottom;
+
+		GetBBox(simon_left, simon_top, simon_right, simon_bottom);
+
+		for (UINT i = 0; i < listChangeScene->size(); i++)
+		{
+			listChangeScene->at(i)->GetBBox(left, top, right, bottom);
+			float t, nx, ny;
+			core::CGameObject::SweptAABB(simon_left, simon_top, simon_right, simon_bottom, dx, dy, left, top, right, bottom, t, nx, ny);
+			bool collision = core::CGameObject::AABB(simon_left, simon_top, simon_right, simon_bottom, left, top, right, bottom);
+			if (nx != 0 || ny != 0 || collision == true)
+			{
+				changeScene = listChangeScene->at(i)->Get_ID_SCENE();
+				return true;
+			}
+		}
+		return false;
+	}
+	bool Simon::CheckCollisionSimonAndStair(vector<core::LPGAMEOBJECT>* listStair)
+	{
+		float simon_left, simon_top, simon_right, simon_bottom;
+		GetBBox(simon_left, simon_top, simon_right, simon_bottom);
+		/////////////////////////////////////////////////
+		////CHINH BBOX CHI XET VA CHAM DUOI CHAN SIMON///
+		/////////////////////////////////////////////////
+		simon_top += 52;
+		simon_bottom += 10;///để xét va chạm với bậc thang đầu tiên khi bước xuống
+		simon_left += 10;
+		simon_right += 10;
+		for(UINT i =0;i<listStair->size();i++)
+		{
+			float stair_left, stair_right, stair_top, stair_bottom;
+			listStair->at(i)->GetBBox(stair_left, stair_top, stair_right, stair_bottom);
+			if (AABB(simon_left, simon_top, simon_right, simon_bottom, stair_left, stair_top, stair_right, stair_bottom)==true)
+			{
+				DebugOut(L"Đã vào");
+				int status;
+				listStair->at(i)->GetStatus(status);
+				if (status == 0)
+				{
+					stairDirection = 1;
+				}
+				else
+					stairDirection = -1;
+				stairCollided = listStair->at(i);
+
+				//bậc thang ở dưới so với chân simon->có thể di chuyển xuống
+				if (simon_bottom+20 < stair_bottom) isMoveDown = true;
+
+				//kiểm tra xem simon có thể di chuyển lên hay không?
+				//vì mảng liststairs gồm các bậc thang liền kề nhau, nên chỉ cần kiểm tra 2 bậc là đủ.
+				float upstair_x = -999, upstair_y = -999;//toạ độ của bậc thang liền kề ở phía trên(nếu có)
+				if(i>0)
+				{
+					listStair->at(i - 1)->GetPosition(upstair_x, upstair_y);//lấy thông số vị trí của bậc thang kế tiếp
+					float dx = abs(upstair_x - stair_left);
+					float dy = upstair_y - stair_top;
+					if(dx==32 &&dy ==-32)
+					{
+						isMoveUp = true;
+						return true;
+					}
+				}
+				if(i<listStair->size()-1)
+				{
+					listStair->at(i + 1)->GetPosition(upstair_x, upstair_y);
+
+					float dx = abs(upstair_x - stair_left);
+					float dy = upstair_y - stair_top;
+					if(dx==32 && dy==-32)
+					{
+						isMoveUp = true;
+						return true;
+					}
+				}
+				//không có bậc thang kế tiếp, cần kiem tra xem simon da di het sprite thang hiện tai chưa
+				//một sprite là 32x32 gồm 2 bac thang mỗi lần simon chỉ đi lên 1 bậc
+				if(stair_top -y<60)
+				{
+					isMoveUp == true;
+					return true;
+				}
+				isMoveUp = false;
+				return true;
+			}
+		}
+		isMoveDown = false;
+		isMoveDown = false;
+		return false;
+	}
+	void Simon::PositionCorrection(int prevState)
+	{
+		float stair_x, stair_y;
+		stairCollided->GetPosition(stair_x, stair_y);
+		if(prevState==-1)
+		{
+			if(status==STAIR_UP)
+			{
+				if(stairDirection==1)
+				{
+					x = stair_x - 44.0f;
+					y = stair_y - 35.0f;
+				}
+				else
+				{
+					x = stair_x + 6.0f;
+					y = stair_y - 31.0f;
+				}
+			}
+			else if(status==STAIR_DOWN)
+			{
+				if(stairDirection==1)
+				{
+					x = stair_x - 15.0f;
+					y = stair_y - 56.0f;
+				}
+				else
+				{
+					x = stair_x - 18.0f;
+					y = stair_y - 47.0f;
+				}
+
+			}
+		}
+		else
+		{
+			if (status == STAIR_UP && prevState == STAIR_DOWN)
+			{
+				if (stairDirection == 1)
+				{
+					x -= 15.0f;
+				}
+				else
+				{
+					x += 3.0f;
+				}
+			}
+			else if(status==STAIR_DOWN &&prevState==STAIR_UP)
+			{
+				if(stairDirection==1)
+				{
+					x += 15.0f;
+				}
+				else
+				{
+					x -= 3.0f;
+				}
+			}
+		}
+	}
+	void Simon::StandOnStair()
+	{
+		vx = 0;
+		vy = 0;
+	}
+
+
 
 }

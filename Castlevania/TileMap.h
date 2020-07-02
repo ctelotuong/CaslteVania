@@ -28,8 +28,10 @@ namespace core
 		int ID_Map;
 	public:
 		vector<vector<int>>map;
-
+		
+		
 		CSprites* sprites;
+
 		
 		void Draw(int camera_x, int camera_y);
 		TileMap(int ID_Map,LPCWSTR FilePath_Read, LPCWSTR Texture_FilePath,int Map_Width,int Map_Height,int Tile_Width, int Tile_Height);
@@ -37,6 +39,7 @@ namespace core
 		
 		void LoadResource();
 		void Load_Data();
+		
 	};
 	typedef TileMap* LPTILEMAP;
 

@@ -28,8 +28,8 @@ LPCWSTR ToLPCWSTR(string st);
 #define MAIN_WINDOW_TITLE	L"Casltecania-Early Acess(broken game) but you still need to pay money to play it (Game industry parody)"
 
 #define BACKGROUND_BACKBUFFER	D3DCOLOR_XRGB(0,0,255)
-#define SCREEN_WIDTH			640
-#define SCREEN_HEIGHT			480
+#define SCREEN_WIDTH			530
+#define SCREEN_HEIGHT			490
 
 #define MAX_FRAME_RATE			120
 #pragma endregion
@@ -76,6 +76,12 @@ LPCWSTR ToLPCWSTR(string st);
 #define ID_TEXTURES_WEAPONS_DAGGER		22
 
 #define ID_TEXTURES_HP					23
+#define ID_TEXTURES_RECT				24
+
+#define ID_TEXTURE_STAIR				25
+#define ID_TEXTURE_BLACK_KNIGHT			26
+#define ID_TEXTURE_BAT					27
+#define ID_TEXTURE_PLATFORM				28
 #pragma endregion
 
 #pragma region ID ANIMATION SIMON
@@ -86,6 +92,10 @@ LPCWSTR ToLPCWSTR(string st);
 #define HIT_SIT_ANIMATION	105
 #define HIT_STAND_ANIMATION	106
 #define UPDATE_ANIMATION		107
+#define STAIR_UP_ANIMATION		108
+#define STAIR_DOWN_ANIMATION	109
+#define HIT_STAIR_UP_ANIMATION	110
+#define HIT_STAIR_DOWN_ANIMATION	111
 #pragma endregion
 
 #pragma region ID ANIMATION WHIPS
@@ -131,6 +141,24 @@ LPCWSTR ToLPCWSTR(string st);
 #define USING_HOLY_WATER_ANIMATION		706
 #pragma endregion
 
+#pragma region ID ANI STAIR
+#define STAIR_LEFT_UP_ANIMATION				801
+#define STAIR_RIGHT_DOWN_ANIMATION			802
+#pragma once
+
+#pragma region ID ANI BLACK KNIGHT
+#define BLACK_KNIGHT_ANIMATION				901
+#pragma once
+
+#pragma region ID ANI BAT
+#define BAT_IDLE_ANIMATION					1001
+#define BAT_ATTACK_ANIMATION				1002
+#pragma once
+
+#pragma region ID ANI PLATFORM
+#define PLATFORM_ANIMATION					1101
+#pragma once
+
 #pragma region STATE SIMON
 #define STAND	0
 #define WALK	1
@@ -140,6 +168,8 @@ LPCWSTR ToLPCWSTR(string st);
 #define ATTACK_STAND	5
 #define ATTACK		6
 #define	UPDATE	7
+#define STAIR_UP	8
+#define STAIR_DOWN	9
 #pragma endregion
 
 #pragma region STATE WHIP
@@ -174,7 +204,17 @@ LPCWSTR ToLPCWSTR(string st);
 #define LAGRE_HEART	6
 #define CHAIN	7
 
-#pragma endregion 
+#pragma endregion
+#pragma region STATE BLACK_KIGHT
+#define BLACK_KNIGHT	0
+#define BLACK_KNIGHT_DESTROY	1
+#pragma once
+
+#pragma region STATE BLACK_KIGHT
+#define BAT_IDLE	0
+#define BAT_ATTACK	1
+#define BAT_DESTROY 2
+#pragma once
 #pragma region ALL PARAMETER FOR UPDATE SIMON
 #define SIMON_SPEED_JUMP	0.5f
 #define SIMON_WALK_SPEED	0.1f
@@ -195,3 +235,7 @@ LPCWSTR ToLPCWSTR(string st);
 
 #define GROUND		0
 #define CANDLE		1
+#define STAIR		2
+#define BLACK_KNIGHT	3
+#define BAT				4
+#define PLATFORM		5

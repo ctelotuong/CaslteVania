@@ -20,6 +20,7 @@ namespace core
 
 		LoadResource();
 		Load_Data();
+		
 	}
 	void TileMap::LoadResource()
 	{
@@ -47,7 +48,7 @@ namespace core
 		{
 			for(int j=0; j<howmuch_col;j++)
 			{
-				sprites->Add(ID_Sprite, Tile_Width * j, Tile_Height * i, Tile_Width * (j + 1), Tile_Height * (i + 1), texTileMap);
+				sprites->Add(1000*ID_Map+ID_Sprite, Tile_Width * j, Tile_Height * i, Tile_Width * (j + 1), Tile_Height * (i + 1), texTileMap);
 				ID_Sprite += 1;
 			}
 		}
@@ -79,16 +80,26 @@ namespace core
 		}
 		map_reader.close();
 	}
-
+	
 	void TileMap::Draw(int camera_x, int camera_y)
 	{
 		int col_draw = (int)camera_x / 32;
-		int col_end_draw = (int)(camera_x + SCREEN_WIDTH) / 32 + 2;
-		for (int i = 0; i < 12; i++)
+		int col_end_draw;
+		if (Map_Width > 16*32)
+		{
+			col_end_draw = (int)(camera_x + SCREEN_WIDTH) / 32+1;
+		}
+		else
+		{
+			col_end_draw = (int)(camera_x + SCREEN_WIDTH) / 32;
+		}
+		for (int i = 0; i < Map_row; i++)
 		{
 			for (int j = col_draw; j < col_end_draw; j++)
 			{
-				sprites->Get(map[i][j])->Draw(1, -1, Tile_Width *j, Tile_Height * i+49);
+				float x = Tile_Width * (j - col_draw) + camera_x - (int)camera_x % 32;
+				float y = Tile_Height * i +64;
+				sprites->Get(1000*ID_Map+map[i][j])->Draw(1, -1, x, y);
 			}
 		}
 	}
