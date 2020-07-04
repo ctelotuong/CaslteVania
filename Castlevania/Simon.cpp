@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+
+#include "Platform.h"
 using namespace std;
 namespace simon
 {
@@ -178,6 +180,15 @@ namespace simon
 					{
 						if (e->nx != 0) x += dx;
 						if (e->ny != 0) y += dy;
+					}
+				}
+				else if (dynamic_cast<item::Platform*>(e->obj))
+				{
+					if (e->ny != 0)
+					{
+						isOntheGround = true;
+						isFalling = false;
+						vy = 0;
 					}
 				}
 			}
@@ -453,8 +464,6 @@ namespace simon
 						return true;
 					}
 				}
-				//không có bậc thang kế tiếp, cần kiem tra xem simon da di het sprite thang hiện tai chưa
-				//một sprite là 32x32 gồm 2 bac thang mỗi lần simon chỉ đi lên 1 bậc
 				if(stair_top -y<60)
 				{
 					isMoveUp == true;

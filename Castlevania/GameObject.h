@@ -102,6 +102,7 @@ namespace core
 		virtual void GetBBox(float& B_left, float& B_top, float& B_right, float& B_bottom)=0;
 		virtual void Render() = 0;
 		virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* List_Objects_In_Game = NULL, vector<LPGAMEOBJECT>* coObject = NULL);
+		
 		virtual void LoadResources(CTexture*& textures, CSprites*& sprites, CAnimations*& animations) = 0;
 	};
 	

@@ -233,6 +233,9 @@ LPCWSTR ToLPCWSTR(string st);
 #define WEAPONS_BOOMERANG_SPEED		0.5f
 #pragma endregion
 
+#define DEFAULT_CELL_WIDTH	256
+#define DEFAULT_CELL_HEIGHT	240
+
 #define GROUND		0
 #define CANDLE		1
 #define STAIR		2

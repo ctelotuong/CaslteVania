@@ -104,7 +104,7 @@ namespace HUD
 		subWeaponBox->Draw(0, -1, 288, 20);
 		if(Subweapon_Simon!=-1)
 		{
-			subWeaponList[Subweapon_Simon]->Draw(0, -1, 303, 40);
+			subWeaponList[Subweapon_Simon]->Draw(0, -1, 303, 25);
 			
 		}
 		for(int i=0;i<HP_Simon;i++)

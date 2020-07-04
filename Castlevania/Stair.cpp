@@ -16,7 +16,7 @@ namespace static_object
 
 	void Stair::LoadResources(core::CTexture*& textures, core::CSprites*& sprites, core::CAnimations*& animations)
 	{
-		D3DCOLOR transparentColor = D3DCOLOR_XRGB(255, 255, 255);
+		D3DCOLOR transparentColor = D3DCOLOR_XRGB(116, 116, 116);
 		textures->Add(ID_TEXTURE_STAIR, L"Textures\\Stair.png", transparentColor);
 		LPDIRECT3DTEXTURE9 texStair = textures->Get(ID_TEXTURE_STAIR);
 		ifstream sprite_reader;

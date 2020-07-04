@@ -132,9 +132,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	cgame = core::CGame::GetInstance();
 	cgame->Init(hWnd);
-	scenes = new core::SceneManager(cgame,SCENE_2_2);
+	scenes = new core::SceneManager(cgame,SCENE_1);
 	scenes->LoadResources();
-	scenes->Init(SCENE_2_2);
+	scenes->Init(SCENE_1);
 	cinput = new input::Input(cgame, scenes);
 	cgame->InitKeyboard(cinput);
 

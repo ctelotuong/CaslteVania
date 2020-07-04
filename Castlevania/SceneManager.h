@@ -20,6 +20,7 @@
 #include "Black_Knight.h"
 #include "Bat.h"
 #include "Platform.h"
+#include "Grid.h"
 namespace core
 {
 	class SceneManager
@@ -27,6 +28,9 @@ namespace core
 		
 		
 		CGame* game;
+		Grid* grid;
+		Unit* unit;
+		
 		static_object::Ground* ground;
 		static_object::Candle* candle;
 		static_object::Item* item;
@@ -44,7 +48,9 @@ namespace core
 		CSprites* sprites = CSprites::GetInstance();
 		CAnimations* animations = CAnimations::GetInstance();
 
-
+		vector<Unit*> listUnits;
+		vector<LPGAMEOBJECT>ListStaticObjectToRender;
+		vector<LPGAMEOBJECT>ListEnemyToRender;
 		vector<LPGAMEOBJECT>List_Objects_In_Game;
 		vector<static_object::LPCHANGESCENEOBJ> listChangeSceneObjs;
 		vector<LPGAMEOBJECT> List_Stairs;
@@ -67,6 +73,9 @@ namespace core
 		void SetGameState(int state);
 		int Get_ID_SCENE() { return this->ID_scene; }
 
+		void Update_Grid();
+		void Get_Obj_From_Grid();
+		
 		simon::Simon* Get_Simon() { return this->simons; }
 		simon::SubWeapon* Get_Sub_Weapon() { return this->subweapon; };
 		vector<LPGAMEOBJECT>* Get_List_Stairs() { return &(this->List_Stairs); }

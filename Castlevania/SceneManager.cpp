@@ -17,17 +17,19 @@ namespace core
 		switch (id_scene)
 		{
 		case SCENE_1:
-		
+			grid = new Grid(1536, 480, DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT);
 			LoadObjectsFromFile(L"Scenes\\Scene1_objects.txt");
 			SetGameState(SCENE_1); 
 			CreateListChangeSceneObjects();
 			break;
 		case SCENE_2:
+			grid = new Grid(544, 480, DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT);
 			LoadObjectsFromFile(L"Scenes\\Scene2_objects.txt");
 			SetGameState(SCENE_2);
 			CreateListChangeSceneObjects(); 
 				break;
 		case SCENE_2_2:
+			grid = new Grid(1056, 480, DEFAULT_CELL_WIDTH, DEFAULT_CELL_HEIGHT);
 			LoadObjectsFromFile(L"Scenes\\Scene2.2_objects.txt");
 			SetGameState(SCENE_2_2);
 			CreateListChangeSceneObjects();
@@ -112,7 +114,7 @@ namespace core
 					ground->SetStatus(status);
 					ground->SetEnable(isEnable);
 					ground->Set_Id_item_that_obj_carry(idItem);
-					List_Objects_In_Game.push_back(ground);
+					unit =new Unit(grid,ground,pos_x,pos_y);
 					break;
 				case CANDLE:
 					candle = new static_object::Candle();
@@ -120,7 +122,7 @@ namespace core
 					candle->SetStatus(status);
 					candle->SetEnable(isEnable);
 					candle->Set_Id_item_that_obj_carry(idItem);
-					List_Objects_In_Game.push_back(candle);
+					unit = new Unit(grid, candle, pos_x, pos_y);
 					break;
 				case STAIR:
 					stair = new static_object::Stair();
@@ -128,8 +130,8 @@ namespace core
 					stair->SetStatus(status);
 					stair->SetEnable(isEnable);
 					stair->Set_Id_item_that_obj_carry(idItem);
-					List_Objects_In_Game.push_back(stair);
 					List_Stairs.push_back(stair);
+					unit = new Unit(grid, stair, pos_x, pos_y);
 					break;
 				case BAT:
 					bat = new enemy::Bat();
@@ -138,7 +140,7 @@ namespace core
 					bat->SetStatus(status);
 					bat->SetEnable(isEnable);
 					bat->Set_Id_item_that_obj_carry(idItem);
-					List_Objects_In_Game.push_back(bat);
+					unit =new Unit(grid, bat, pos_x, pos_y);
 					break;
 				default:
 					break;
@@ -155,7 +157,7 @@ namespace core
 					black_knight->SetStatus(status);
 					black_knight->SetEnable(isEnable);
 					black_knight->Set_Id_item_that_obj_carry(idItem);
-					List_Objects_In_Game.push_back(black_knight);
+					unit = new Unit(grid, black_knight, pos_x, pos_y);
 					black_knight->Set_start_end(start_x, end_x);
 					break;
 				case PLATFORM:
@@ -164,7 +166,7 @@ namespace core
 					platform->SetStatus(status);
 					platform->SetEnable(isEnable);
 					platform->Set_Id_item_that_obj_carry(idItem);
-					List_Objects_In_Game.push_back(platform);
+					unit = new Unit(grid, platform, pos_x, pos_y);
 					platform->Set_start_end(start_x, end_x);
 					break;
 				}
@@ -185,6 +187,7 @@ namespace core
 				simons->Set_Change_Scene(-1);
 			}
 		}
+		Get_Obj_From_Grid();
 		for(int i=0;i<List_Objects_In_Game.size();i++)
 		{
 			if (List_Objects_In_Game[i]->Is_Enable == false)
@@ -237,7 +240,7 @@ namespace core
 				{
 					if (List_Objects_In_Game[j]->Is_Enable == false)
 						continue;
-					if (dynamic_cast<static_object::Ground*>(List_Objects_In_Game[j])) //Nạp tất cả object là Ground vào co0jects trong hàm update Subweapon de xu lý va chạm
+					if (dynamic_cast<static_object::Ground*>(List_Objects_In_Game[j])) 
 					{
 						co0bjects.push_back(List_Objects_In_Game[j]);
 					}
@@ -263,7 +266,7 @@ namespace core
 				{
 					if (List_Objects_In_Game[j]->Is_Enable == false)
 						continue;
-					if (dynamic_cast<static_object::Ground*>(List_Objects_In_Game[j])) //Nạp tất cả object là Ground vào co0jects trong hàm update Subweapon de xu lý va chạm
+					if (dynamic_cast<static_object::Ground*>(List_Objects_In_Game[j])) 
 					{
 						co0bjects.push_back(List_Objects_In_Game[j]);
 					}
@@ -274,6 +277,7 @@ namespace core
 				co0bjects.push_back(List_Objects_In_Game[i]);
 			}
 			List_Objects_In_Game[i]->Update(dt, &List_Objects_In_Game, &co0bjects);
+			
 		}
 		//cập nhật vị trí CAM
 		float sx, sy;
@@ -340,7 +344,7 @@ namespace core
 			game->SetCamaraPosition(0.0f, 0.0f);
 			break;
 		case SCENE_2_2:
-			simons->SetPosition(740.0f, 389.0f);
+			simons->SetPosition(732.0f, 400.0f);
 			simons->SetStatus(STAIR_UP);
 			simons->SetOrientation_x(1);
 			game->SetCamaraPosition(544.0f, 0.0f);
@@ -360,6 +364,48 @@ namespace core
 		case SCENE_2:
 			changeScene = new static_object::ChangeScene(288, 64, SCENE_2_2);
 			listChangeSceneObjs.push_back(changeScene);
+		}
+	}
+	void SceneManager::Get_Obj_From_Grid()
+	{
+		for(int i= 0;i<List_Objects_In_Game.size();i++)
+		{
+			if (dynamic_cast<simon::Simon*>(List_Objects_In_Game[i]))
+			{
+				continue;
+			}
+			else if (dynamic_cast<simon::SubWeapon*>(List_Objects_In_Game[i]))
+			{
+				continue;
+			}
+			else if(dynamic_cast<static_object::Item*>(List_Objects_In_Game[i]))
+			{
+				continue;
+			}
+			else
+			{
+				List_Objects_In_Game.erase(List_Objects_In_Game.begin()+i);
+				i--;
+			}
+		}
+		listUnits.clear();
+		float x, y;
+		game->GetCameraPositon(x, y);
+		grid->Get(x, y, listUnits);
+		DebugOut(L"%d \n", listUnits.size());
+		for (int i = 0; i < listUnits.size(); i++)
+		{
+			LPGAMEOBJECT obj = listUnits[i]->GetObj();
+			List_Objects_In_Game.push_back(obj);
+		}
+	}
+	void SceneManager::Update_Grid()
+	{
+		for (int i = 0; i < listUnits.size(); i++)
+		{
+			float newPos_x, newPos_y;
+			listUnits[i]->GetObj()->GetPosition(newPos_x, newPos_y);
+			listUnits[i]->Move(newPos_x, newPos_y);
 		}
 	}
 
