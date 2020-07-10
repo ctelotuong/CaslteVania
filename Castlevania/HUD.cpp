@@ -67,6 +67,7 @@ namespace HUD
 		Life_Simon = simons->GetLife();
 		Subweapon_Simon = simons->GetSubweapon();
 		HP_Simon = simons->GetHP();
+		Scene = scenes->Get_ID_SCENE();
 		Time += dt;
 
 		int RemainTime = 1000 - Time / 1000;
@@ -85,6 +86,7 @@ namespace HUD
 		
 		string life_str = to_string(Life_Simon);
 		while (life_str.length() < 2) life_str = "0" + life_str;
+		
 
 		//update information
 		information = "SCORE-" + score_str + " TIME " + time_str + " SCENE" + scene_str + "\n";
@@ -107,6 +109,7 @@ namespace HUD
 			subWeaponList[Subweapon_Simon]->Draw(0, -1, 303, 25);
 			
 		}
+		
 		for(int i=0;i<HP_Simon;i++)
 		{
 			playerHp[i]->Draw(0, -1, 105 + i * 9, 20);

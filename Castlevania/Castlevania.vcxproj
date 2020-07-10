@@ -155,9 +155,11 @@
     <ClCompile Include="ChangeScene.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="HunchBack.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
@@ -180,9 +182,11 @@
     <ClInclude Include="ChangeScene.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Ghost.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="HunchBack.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="KeyEventHandler.h" />

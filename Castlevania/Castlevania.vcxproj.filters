@@ -129,6 +129,12 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="HunchBack.cpp">
+      <Filter>Source Files\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -202,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>Header Files\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="HunchBack.h">
+      <Filter>Header Files\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

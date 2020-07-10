@@ -11,6 +11,7 @@ namespace enemy
 		float destination_x;
 		bool IsOntheGround = false;
 		bool Simon_in_the_zone = false;
+		
 	public:
 		Black_Knight();
 		virtual void Update(DWORD dt, vector<core::LPGAMEOBJECT>* List_Objects_In_Game, vector<core::LPGAMEOBJECT>* coObject) override;
@@ -19,7 +20,8 @@ namespace enemy
 		virtual void GetBBox(float& B_left, float& B_top, float& B_right, float& B_bottom) override;
 		void Set_destination_x(float x) { this->destination_x = x; }
 		void Set_start_end(float start_x, float end_x) { this->start_x = start_x; this->end_x = end_x; }
-		void Is_Simon_in_the_target(float sx, float sy);
+		void Is_Simon_in_the_target(float sx, float sy,bool x);
+		
 	};
 }
 

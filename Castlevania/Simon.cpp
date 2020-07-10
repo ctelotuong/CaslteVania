@@ -23,6 +23,7 @@ namespace simon
 		Add_Animation_into_state(STAIR_DOWN_ANIMATION);
 		Add_Animation_into_state(HIT_STAIR_UP_ANIMATION);
 		Add_Animation_into_state(HIT_STAIR_DOWN_ANIMATION);
+		Add_Animation_into_state(DEFLECT_ANIMATION);
 		whip = new Whip();
 		Mana = 14;
 		Life = 3;
@@ -38,20 +39,32 @@ namespace simon
 		//Cho tốc độ simon nhảy lên nhanh gấp 2 lần khi simon rơi xuống
 		if (status != STAIR_UP && status != STAIR_DOWN)
 		{
-			if (vy >= 0 && vy <= SIMON_SPEED_JUMP / 2)
-			{
-				vy += HALF_OF_GRAVITY * dt;
-			}
-			else
-			{
-				vy += GRAVITY * dt;
-				isFalling = true;
-				//tránh lun giữ trạng thái ATTACK_STAND khi simon rơi xuống làm quay lại FRAME đầu.
-				if (vy > 0.6f)
+				if (vy >= 0 && vy <= SIMON_SPEED_JUMP / 2)
 				{
-					status = STAND;
+					vy += HALF_OF_GRAVITY * dt;
 				}
+				else
+				{
+					vy += GRAVITY * dt;
+					isFalling = true;
+					//tránh lun giữ trạng thái ATTACK_STAND khi simon rơi xuống làm quay lại FRAME đầu.
+					if (vy > 0.6f)
+					{
+						status = STAND;
+					}
+				}
+			//simon rơi tự do
+			if(status!=ATTACK_STAND&&status!=JUMP &&status!=DEFLECT&&vy>0.016f)
+			{
+				vx = 0;
+				isFalling = true;
+				isOntheGround = false;
 			}
+		}
+		if(GetTickCount()-UnTouchAble_time_start>2000)
+		{
+			UnTouchAble_time_start = 0;
+			isUnTouchAble = false;
 		}
 		//Xét va chạm với item
 		for (UINT i = 0; i < coObjects->size(); i++)
@@ -94,6 +107,40 @@ namespace simon
 					default:
 						break;
 					}
+				}
+			}
+			if (dynamic_cast<enemy::Black_Knight*>(obj))
+			{
+				enemy::Black_Knight* e = dynamic_cast<enemy::Black_Knight*>(obj);
+				float left, top, right, bottom;
+				e->GetBBox(left, top, right, bottom);
+				if (CheckCollisionSimonAndItem(left, top, right, bottom) == true && isUnTouchAble==false)
+				{
+					SetStatus(DEFLECT);
+					StartUnTouchAble();
+					SetHP(HP - 2);
+				}
+			}
+			if (dynamic_cast<enemy::Bat*>(obj))
+			{
+				enemy::Bat* e = dynamic_cast<enemy::Bat*>(obj);
+				float left, top, right, bottom;
+				e->GetBBox(left, top, right, bottom);
+				if (CheckCollisionSimonAndItem(left, top, right, bottom) == true )
+				{
+					e->SetStatus(BAT_DESTROY);
+				}
+			}
+			if (dynamic_cast<enemy::Ghost*>(obj))
+			{
+				enemy::Ghost* e = dynamic_cast<enemy::Ghost*>(obj);
+				float left, top, right, bottom;
+				e->GetBBox(left, top, right, bottom);
+				if (CheckCollisionSimonAndItem(left, top, right, bottom) == true && isUnTouchAble == false)
+				{
+					SetStatus(DEFLECT);
+					StartUnTouchAble();
+					SetHP(HP - 2);
 				}
 			}
 		}
@@ -162,6 +209,11 @@ namespace simon
 					{
 						status = STAND;
 					}
+
+					if(status==DEFLECT)
+					{
+						status = SIT;
+					}
 				}
 				else if(dynamic_cast<static_object::Item*>(e->obj))
 				{
@@ -184,12 +236,22 @@ namespace simon
 				}
 				else if (dynamic_cast<item::Platform*>(e->obj))
 				{
+					
 					if (e->ny != 0)
 					{
 						isOntheGround = true;
 						isFalling = false;
+						vx = e->obj->vx;
 						vy = 0;
 					}
+				}
+				else if((dynamic_cast<enemy::Bat*>(e->obj) ||dynamic_cast<enemy::Black_Knight*>(e->obj)||dynamic_cast<enemy::Ghost*>(e->obj))&& isUnTouchAble==false)
+				{
+					if (e->nx != 0) x += dx;
+					if (e->ny != 0) y += dy;
+  					SetStatus(DEFLECT);
+					StartUnTouchAble();
+					SetHP(HP - 2);
 				}
 			}
 		}
@@ -216,6 +278,46 @@ namespace simon
 							e->SetStatus(CANDLE_DESTROY);
 						}
 					}
+					if(dynamic_cast<enemy::Bat*>(obj))
+					{
+						enemy::Bat* e = dynamic_cast<enemy::Bat*>(obj);
+						float left, top, right, bottom;
+						e->GetBBox(left, top, right, bottom);
+						if(whip->CheckCollisionWhipAndStuff(left,top,right,bottom)==true)
+						{
+							e->SetStatus(BAT_DESTROY);
+						}
+					}
+					if (dynamic_cast<enemy::Black_Knight*>(obj))
+					{
+						enemy::Black_Knight* e = dynamic_cast<enemy::Black_Knight*>(obj);
+						float left, top, right, bottom;
+						e->GetBBox(left, top, right, bottom);
+						if (whip->CheckCollisionWhipAndStuff(left, top, right, bottom) == true)
+						{
+							e->SetStatus(BLACK_KNIGHT_DESTROY);
+						}
+					}
+					if (dynamic_cast<enemy::Bat*>(obj))
+					{
+						enemy::Bat* e = dynamic_cast<enemy::Bat*>(obj);
+						float left, top, right, bottom;
+						e->GetBBox(left, top, right, bottom);
+						if (whip->CheckCollisionWhipAndStuff(left, top, right, bottom) == true)
+						{
+							e->SetStatus(BAT_DESTROY);
+						}
+					}
+					if (dynamic_cast<enemy::Ghost*>(obj))
+					{
+						enemy::Ghost* e = dynamic_cast<enemy::Ghost*>(obj);
+						float left, top, right, bottom;
+						e->GetBBox(left, top, right, bottom);
+						if (whip->CheckCollisionWhipAndStuff(left, top, right, bottom) == true)
+						{
+							e->SetStatus(GHOST_DESTROY);
+						}
+					}
 				}
 			}
 		}
@@ -223,11 +325,23 @@ namespace simon
 	}
 	void Simon::Render()
 	{
-		
-		animations[status]->Render(1, Orientation_x, x, y);
-		if(status==ATTACK_SIT || status==ATTACK_STAND)
+		if(isUnTouchAble)
 		{
-			whip->Render(animations[status]->GetCurrentFrame());
+			int r = rand() % 2;
+			if (r == 0)
+			{
+				animations[status]->Render(1, Orientation_x, x, y);
+			}
+			else
+				animations[status]->Render(1, Orientation_x, x, y, 100);
+		}
+		else
+		{
+			animations[status]->Render(1, Orientation_x, x, y);
+			if (status == ATTACK_SIT || status == ATTACK_STAND)
+			{
+				whip->Render(animations[status]->GetCurrentFrame());
+			}
 		}
 	}
 	void Simon::SetStatus(int status)
@@ -241,7 +355,7 @@ namespace simon
 			isMoveUp = false;
 			isMoveDown = false;
 			isOnStair = false;
-			vx = 0;
+			
 			break;
 		case WALK:
 			isOnStair = false;
@@ -294,6 +408,15 @@ namespace simon
 			animations[status]->Reset();
 			animations[status]->SetAniStartTime(GetTickCount());
 			break;
+		case DEFLECT:
+			DebugOut(L"SIMON DEFLECT");
+			vy = -SIMON_DEFLECT_SPEED_Y;
+			if (Orientation_x > 0)
+				vx = -SIMON_DEFLECT_SPEED_X;
+			else
+				vx = SIMON_DEFLECT_SPEED_X;
+			animations[status]->Reset();
+			animations[status]->SetAniStartTime(GetTickCount());
 		default:
 			break;
 		}
@@ -409,20 +532,23 @@ namespace simon
 	}
 	bool Simon::CheckCollisionSimonAndStair(vector<core::LPGAMEOBJECT>* listStair)
 	{
+		
+		
+
 		float simon_left, simon_top, simon_right, simon_bottom;
 		GetBBox(simon_left, simon_top, simon_right, simon_bottom);
 		/////////////////////////////////////////////////
 		////CHINH BBOX CHI XET VA CHAM DUOI CHAN SIMON///
 		/////////////////////////////////////////////////
 		simon_top += 52;
-		simon_bottom += 10;///để xét va chạm với bậc thang đầu tiên khi bước xuống
+		simon_bottom += 5;///để xét va chạm với bậc thang đầu tiên khi bước xuống
 		simon_left += 10;
 		simon_right += 10;
 		for(UINT i =0;i<listStair->size();i++)
 		{
 			float stair_left, stair_right, stair_top, stair_bottom;
 			listStair->at(i)->GetBBox(stair_left, stair_top, stair_right, stair_bottom);
-			if (AABB(simon_left, simon_top, simon_right, simon_bottom, stair_left, stair_top, stair_right, stair_bottom)==true)
+			if (AABB(simon_left, simon_top, simon_right, simon_bottom, stair_left, stair_top, stair_right, stair_bottom) == true)
 			{
 				DebugOut(L"Đã vào");
 				int status;
@@ -436,45 +562,42 @@ namespace simon
 				stairCollided = listStair->at(i);
 
 				//bậc thang ở dưới so với chân simon->có thể di chuyển xuống
-				if (simon_bottom+20 < stair_bottom) isMoveDown = true;
-
+				if (simon_bottom < stair_bottom)
+				{
+					isMoveDown = true;
+					return true;
+				}
+				if (stair_top - y <= 30)
+				{
+					isMoveUp = true;
+					return true;
+				}
 				//kiểm tra xem simon có thể di chuyển lên hay không?
 				//vì mảng liststairs gồm các bậc thang liền kề nhau, nên chỉ cần kiểm tra 2 bậc là đủ.
 				float upstair_x = -999, upstair_y = -999;//toạ độ của bậc thang liền kề ở phía trên(nếu có)
-				if(i>0)
+				for(UINT j=0;j<listStair->size();j++)
 				{
-					listStair->at(i - 1)->GetPosition(upstair_x, upstair_y);//lấy thông số vị trí của bậc thang kế tiếp
+					if(i==j)
+					{
+						continue;
+					}
+					listStair->at(j)->GetPosition(upstair_x, upstair_y);
 					float dx = abs(upstair_x - stair_left);
 					float dy = upstair_y - stair_top;
-					if(dx==32 &&dy ==-32)
+					if(dx==32&&dy==-32)
 					{
 						isMoveUp = true;
-						return true;
 					}
-				}
-				if(i<listStair->size()-1)
-				{
-					listStair->at(i + 1)->GetPosition(upstair_x, upstair_y);
-
-					float dx = abs(upstair_x - stair_left);
-					float dy = upstair_y - stair_top;
-					if(dx==32 && dy==-32)
+					if(dx==32 && dy==32)
 					{
-						isMoveUp = true;
-						return true;
+						isMoveDown = true;
 					}
 				}
-				if(stair_top -y<60)
-				{
-					isMoveUp == true;
-					return true;
-				}
-				isMoveUp = false;
 				return true;
 			}
 		}
 		isMoveDown = false;
-		isMoveDown = false;
+		isMoveUp = false;
 		return false;
 	}
 	void Simon::PositionCorrection(int prevState)

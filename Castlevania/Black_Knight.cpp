@@ -142,12 +142,19 @@ namespace enemy
 		}
 		
 	}
-	void Black_Knight::Is_Simon_in_the_target(float sx, float sy)
+	void Black_Knight::Is_Simon_in_the_target(float sx, float sy,bool x)
 	{
+		if (x == true)
+		{
+			Simon_in_the_zone = false;
+			Set_destination_x(0);
+			return;
+		}
 		if (start_x <= sx && end_x >= sx &&y<sy+10&&y+64>=sy+10)
 		{
-			Simon_in_the_zone = true;
-			Set_destination_x(sx);
+			
+				Simon_in_the_zone = true;
+				Set_destination_x(sx);
 		}
 		else
 		{
@@ -166,5 +173,6 @@ namespace enemy
 		B_right = x + 32;
 		B_bottom = y + 64;
 	}
+	
 
 }

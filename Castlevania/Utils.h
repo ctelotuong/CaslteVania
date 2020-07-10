@@ -82,6 +82,7 @@ LPCWSTR ToLPCWSTR(string st);
 #define ID_TEXTURE_BLACK_KNIGHT			26
 #define ID_TEXTURE_BAT					27
 #define ID_TEXTURE_PLATFORM				28
+#define ID_TEXTURE_GHOST				29
 #pragma endregion
 
 #pragma region ID ANIMATION SIMON
@@ -96,6 +97,7 @@ LPCWSTR ToLPCWSTR(string st);
 #define STAIR_DOWN_ANIMATION	109
 #define HIT_STAIR_UP_ANIMATION	110
 #define HIT_STAIR_DOWN_ANIMATION	111
+#define DEFLECT_ANIMATION		112
 #pragma endregion
 
 #pragma region ID ANIMATION WHIPS
@@ -158,6 +160,9 @@ LPCWSTR ToLPCWSTR(string st);
 #pragma region ID ANI PLATFORM
 #define PLATFORM_ANIMATION					1101
 #pragma once
+#pragma region ID ANI GHOST
+#define GHOST_ANIMATION						1201
+#pragma once
 
 #pragma region STATE SIMON
 #define STAND	0
@@ -170,6 +175,7 @@ LPCWSTR ToLPCWSTR(string st);
 #define	UPDATE	7
 #define STAIR_UP	8
 #define STAIR_DOWN	9
+#define DEFLECT		12
 #pragma endregion
 
 #pragma region STATE WHIP
@@ -215,12 +221,21 @@ LPCWSTR ToLPCWSTR(string st);
 #define BAT_ATTACK	1
 #define BAT_DESTROY 2
 #pragma once
+
+#pragma region STATE_GHOST
+#define GHOST_ATTACK 0
+#define GHOST_DESTROY 1
+#define GHOST_INACTIVE 2
+#pragma once
+
 #pragma region ALL PARAMETER FOR UPDATE SIMON
 #define SIMON_SPEED_JUMP	0.5f
 #define SIMON_WALK_SPEED	0.1f
 #define GRAVITY				0.002f
 #define HALF_OF_GRAVITY		0.001f
-
+#define SIMON_DEFLECT_SPEED_Y	0.3f
+#define SIMON_DEFLECT_SPEED_X	0.08f
+#pragma once
 #pragma region ALL PAREMTER FOR UPDATE SUBWEAPON
 #define WEAPONS_DAGGER_SPEED		0.3f
 
@@ -242,3 +257,4 @@ LPCWSTR ToLPCWSTR(string st);
 #define BLACK_KNIGHT	3
 #define BAT				4
 #define PLATFORM		5
+#define GHOST			6

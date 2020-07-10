@@ -1,6 +1,4 @@
-﻿  Simon.cpp
-C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Utils.h(242,1): warning C4005: 'BLACK_KNIGHT': macro redefinition
-C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Utils.h(209): message : see previous definition of 'BLACK_KNIGHT'
-C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Simon.cpp(197,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Simon.cpp(469,15): warning C4553: '==': result of expression not used; did you intend '='?
+﻿  main.cpp
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Utils.h(257,1): warning C4005: 'BLACK_KNIGHT': macro redefinition
+C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Utils.h(215): message : see previous definition of 'BLACK_KNIGHT'
   Castlevania.vcxproj -> C:\Users\tuong\Documents\CaslteVania V2\CaslteVania\Castlevania\Debug\Castlevania.exe

@@ -8,7 +8,9 @@
 #include "Whip.h"
 #include "SubWeapon.h"
 #include "ChangeScene.h"
-
+#include "Bat.h"
+#include "Black_Knight.h"
+#include "Ghost.h"
 namespace simon
 {
 	class Simon:public core::CGameObject
@@ -20,6 +22,10 @@ namespace simon
 		int Life;
 		int Subweapon;
 		int HP;
+
+		bool isUnTouchAble = false;
+		DWORD UnTouchAble_time_start = 0;
+		
 	public:
 		bool isStand = true;
 		bool isOntheGround = false;
@@ -89,6 +95,11 @@ namespace simon
 		/////////GIU SIMON DUNG YEN TRN BAC THANg////
 		/////////////////////////////////////////////
 		void StandOnStair();
+		/////////////////////////////////////////
+		////////////Bật điếm tg untouchable//////
+		/////////////////////////////////////////
+		void StartUnTouchAble() { isUnTouchAble = true; UnTouchAble_time_start = GetTickCount(); }
+		bool Get_isTouchAble() { return isUnTouchAble; }
 	};
 }
 

@@ -85,7 +85,7 @@ namespace enemy
 	}
 	void Bat::Is_Simon_in_the_target(float sx, float sy)
 	{
-		if(x+182>sx&&y+50>=sy)
+		if(x+182>sx&&y+50>=sy &&Simon_in_the_zone==false)
 		{
 			Simon_in_the_zone = true;
 			SetStatus(BAT_ATTACK);
@@ -102,7 +102,10 @@ namespace enemy
 	}
 	void Bat::Render()
 	{
-		animations[status]->Render(1, Orientation_x, x, y);
+		if (status != BAT_DESTROY)
+		{
+			animations[status]->Render(1, Orientation_x, x, y);
+		}
 	}
 	void Bat::SetStatus(int status)
 	{
@@ -125,6 +128,9 @@ namespace enemy
 				vy = 0;
 			else
 			vy = 0.2f;
+			break;
+		case BAT_DESTROY:
+			vx = 0;
 			break;
 		}
 	}

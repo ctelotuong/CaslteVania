@@ -100,6 +100,14 @@ namespace core
 	{
 		int start_col = (int)(cam_x / cell_width);
 		int end_col = (int)((cam_x+SCREEN_WIDTH) / cell_height);
+		if(end_col != nums_col)
+		{
+			end_col += 1;
+		}
+		if(start_col!=0)
+		{
+			start_col += -1;
+		}
 		for(int i=0;i<nums_row;i++)
 		{
 			for(int j=start_col;j<end_col;j++)

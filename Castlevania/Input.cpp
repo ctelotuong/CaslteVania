@@ -50,7 +50,7 @@ namespace input
 		scenes->Get_Simon()->GetStatus(status);
 		//Nếu simon k chạm đất và đang dứng ( đánh trên không trung) hoặc k chạm dất và đang nhảy thì không xử lý
 		if ((scenes->Get_Simon()->isOntheGround == false && status == STAND) ||
-			(scenes->Get_Simon()->isOntheGround == false && status == JUMP) || scenes->Get_Simon()->isFalling==true)
+			(scenes->Get_Simon()->isOntheGround == false && status == JUMP) || status==DEFLECT || scenes->Get_Simon()->isFalling==true)
 		{
 			return false;
 		}
@@ -195,6 +195,11 @@ namespace input
 			{
 				if(status == JUMP || status == STAND)
 				scenes->Get_Simon()->SetStatus(ATTACK_STAND);
+				else if(status ==WALK)
+				{
+					scenes->Get_Simon()->SetStatus(ATTACK_STAND);
+					scenes->Get_Simon()->vx = 0;
+				}
 				else if (status == SIT)
 				{
 					scenes->Get_Simon()->SetStatus(ATTACK_SIT);

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Game.h"
 #include "Ground.h"
 #include "Candle.h"
@@ -21,6 +21,7 @@
 #include "Bat.h"
 #include "Platform.h"
 #include "Grid.h"
+#include  "Ghost.h"
 namespace core
 {
 	class SceneManager
@@ -41,6 +42,7 @@ namespace core
 		static_object::ChangeScene* changeScene;
 		enemy::Black_Knight* black_knight;
 		enemy::Bat* bat;
+		enemy::Ghost* ghost;
 		item::Platform* platform;
 		
 		TileMaps* tilemaps = TileMaps::GetInstance();
@@ -76,8 +78,12 @@ namespace core
 		void Update_Grid();
 		void Get_Obj_From_Grid();
 		
+		
 		simon::Simon* Get_Simon() { return this->simons; }
 		simon::SubWeapon* Get_Sub_Weapon() { return this->subweapon; };
 		vector<LPGAMEOBJECT>* Get_List_Stairs() { return &(this->List_Stairs); }
+
+		//Hàm set status của các item và object khi ra ngoài tầm camera
+		void SetStatusByCameraPosition();
 	};
 }
